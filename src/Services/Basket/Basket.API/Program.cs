@@ -1,4 +1,5 @@
 using Basket.API.Repositories;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +10,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Catalog.API v1"));
 }
 
 app.UseAuthorization();
@@ -22,7 +23,7 @@ static void ConfigureServices(WebApplicationBuilder builder)
 {
     builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddSwaggerGen();
+    builder.Services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "Catalog.API", Version = "v1" }));
     builder.Services.AddStackExchangeRedisCache(opts =>
     {
         opts.Configuration = builder.Configuration.GetValue<string>("CacheSettings:ConnectionString");
