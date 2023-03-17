@@ -1,3 +1,5 @@
+using Basket.API.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 ConfigureServices(builder);
@@ -25,4 +27,5 @@ static void ConfigureServices(WebApplicationBuilder builder)
     {
         opts.Configuration = builder.Configuration.GetValue<string>("CacheSettings:ConnectionString");
     });
+    builder.Services.AddScoped<IBasketRepository, BasketRepository>();
 }
