@@ -1,3 +1,6 @@
+using Discount.API.Repositories;
+using Microsoft.OpenApi.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 ConfigureServices(builder);
@@ -11,6 +14,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseRouting();
+
 app.UseAuthorization();
 
 app.MapControllers();
@@ -21,5 +26,9 @@ static void ConfigureServices(WebApplicationBuilder builder)
 {
     builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddSwaggerGen();
+    builder.Services.AddSwaggerGen(c =>
+    {
+        c.SwaggerDoc("v1", new OpenApiInfo { Title = "Discount.API", Version = "v1" });
+    });
+    builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
 }
